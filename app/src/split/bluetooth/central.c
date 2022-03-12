@@ -136,20 +136,21 @@ static int split_central_subscribe(struct bt_conn *conn) {
         LOG_ERR("Subscribe failed (err %d)", err);
         break;
     }
+    return 0;
 }
 
-static uint8_t split_central_chrc_discovery_func(struct bt_conn *conn,
-                                                 const struct bt_gatt_attr *attr,
-                                                 struct bt_gatt_discover_params *params) {
-    if (!attr) {
-        LOG_DBG("Discover complete");
-        return BT_GATT_ITER_STOP;
-    }
+static uint8_t split_central_discovery_func(struct bt_conn *conn, const struct bt_gatt_attr *attr,
+                                                 const struct bt_gatt_attr *attr,		                                            struct bt_gatt_discover_params *params) {
+                                                 struct bt_gatt_discover_params *params) {		    int err;
+    if (!attr) {		    if (!attr) {
+        LOG_DBG("Discover complete");		        LOG_DBG("Discover complete");
+        return BT_GATT_ITER_STOP;		        (void)memset(params, 0, sizeof(*params));
+    }		
+    if (!attr->user_data) {		
+        LOG_ERR("Required user data not passed to discovery");		
+        return BT_GATT_ITER_STOP;		        return BT_GATT_ITER_STOP;
+    }		    }
 
-    if (!attr->user_data) {
-        LOG_ERR("Required user data not passed to discovery");
-        return BT_GATT_ITER_STOP;
-    }
 
     LOG_DBG("[ATTRIBUTE] handle %u", attr->handle);
 
