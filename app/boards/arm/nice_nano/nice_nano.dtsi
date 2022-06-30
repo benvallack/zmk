@@ -73,7 +73,7 @@
 			label = "softdevice";
 			reg = <0x00000000 0x00001000>;
 		};
-		code_partition: partition@26000 {
+		code_partition: partition@1000 {
 			label = "code_partition";
 			reg = <0x00001000 0x000d3000>;
 		};
